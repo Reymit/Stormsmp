@@ -1,0 +1,82 @@
+{
+  "ranks": [
+    {
+      "id": "storm",
+      "name": "Storm",
+      "name_fa": "استورم",
+      "color": "#ff6b35",
+      "features": [
+        "پرک و چت رنگی نارنجی + لوگو S در تب و چت",
+        "دریافت شارد بنفش در هر دقیقه",
+        "۳ عدد ست‌هوم",
+        "کول‌داون /rtp کمتر"
+      ],
+      "features_en": [
+        "Orange colored chat perk + S logo in tab & chat",
+        "Purple Shard every minute",
+        "3 Sethomes",
+        "Reduced /rtp cooldown"
+      ]
+    },
+    {
+      "id": "stormplus",
+      "name": "Storm+",
+      "name_fa": "استورم+",
+      "color": "#ff4500",
+      "features": [
+        "تمام قابلیت‌های رنک Storm",
+        "پرک و لوگوی + نارنجی در چت و تب",
+        "/rtp بدون کول‌داون",
+        "دستور /fly",
+        "دستور /hide (مخفی کردن نام)",
+        "۵ عدد ست‌هوم"
+      ],
+      "features_en": [
+        "All Storm rank features",
+        "Orange + logo perk in chat & tab",
+        "/rtp with no cooldown",
+        "/fly command",
+        "/hide command (hide nametag)",
+        "5 Sethomes"
+      ]
+    },
+    {
+      "id": "media",
+      "name": "MEDIA",
+      "name_fa": "مدیا",
+      "color": "#ff1e56",
+      "features": [
+        "تمام قابلیت‌های رنک Storm+",
+        "رنک اختصاصی MEDIA در چت",
+        "پشتیبانی مستقیم از ادمین",
+        "امکان درخواست ایونت اختصاصی"
+      ],
+      "features_en": [
+        "All Storm+ rank features",
+        "Exclusive MEDIA rank in chat",
+        "Direct admin support",
+        "Ability to request custom events"
+      ],
+      "requirements": {
+        "youtube": "حداقل ۵۰۰ سابسکرایبر + ۱۰۰۰ ویو (شورتس یا لانگ)",
+        "youtube_en": "Minimum 500 subscribers + 1000 views (Shorts or Long)",
+        "tiktok_instagram": "حداقل ۶۷۰ فالوور + ۲۰۰۰ ویو",
+        "tiktok_instagram_en": "Minimum 670 followers + 2000 views",
+        "conditions": [
+          "آی‌پی سرور باید در صفحه ویدیو مشخص باشد",
+          "استفاده از هیچ چیت یا ماد ممنوعه‌ای مجاز نیست",
+          "نام هیچ سرور رقیبی به جز DonutSMP نباید در ویدیو باشد",
+          "فحش و محتوای نامناسب ممنوع است",
+          "قوانین سرور باید رعایت شود"
+        ],
+        "conditions_en": [
+          "Server IP must be clearly visible on screen",
+          "No banned cheats or mods allowed",
+          "No rival server names except DonutSMP",
+          "No swearing or inappropriate content",
+          "Must follow all server rules"
+        ]
+      }
+    }
+  ]
+}

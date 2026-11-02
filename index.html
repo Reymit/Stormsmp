@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StormSMP | Official Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --orange: #ff6b35;
+      --orange-deep: #ff4500;
+      --red: #ff1e56;
+      --bg: #0a0a0c;
+      --glass: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --text: #f5f5f5;
+      --text-muted: #b0b0b0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Vazirmatn', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Background */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(255, 107, 53, 0.25), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 10%, rgba(255, 30, 86, 0.2), transparent),
+        radial-gradient(ellipse 50% 50% at 50% 100%, rgba(255, 69, 0, 0.15), transparent),
+        #0a0a0c;
+      z-index: -2;
+    }
+
+    /* Mouse Trail Canvas */
+    #trail-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Glass Card */
+    .glass {
+      background: var(--glass);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 -1px 0 rgba(255,255,255,0.05),
+        0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    /* Typography */
+    .mc-font {
+      font-family: 'Press Start 2P', cursive;
+      letter-spacing: 1px;
+    }
+
+    h1, h2, h3 {
+      font-weight: 700;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      padding: 30px 0 20px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 180px;
+      height: auto;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.5));
+    }
+
+    .server-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 22px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulse 2s infinite;
+    }
+
+    .status-dot.offline {
+      background: #ef4444;
+      box-shadow: 0 0 10px #ef4444;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* IP Box */
+    .ip-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 25px auto;
+      padding: 14px 24px;
+      max-width: 420px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .ip-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--orange);
+      box-shadow: 0 0 25px rgba(255, 107, 53, 0.3);
+    }
+
+    .copy-btn {
+      background: linear-gradient(135deg, var(--orange), var(--red));
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .copy-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+
+    nav button {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    nav button:hover,
+    nav button.active {
+      background: linear-gradient(135deg, rgba(255,107,53,0.25), rgba(255,30,86,0.2));
+      border-color: var(--orange);
+    }
+
+    /* Sections */
+    section {
+      display: none;
+      padding: 20px 0 60px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, var(--orange), var(--red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-title .en {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Rules */
+    .rules-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .rule-card {
+      padding: 20px;
+    }
+
+    .rule-card h3 {
+      color: var(--orange);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .banned-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .banned-item {
+      background: rgba(255, 30, 86, 0.15);
+      border: 1px solid rgba(255, 30, 86, 0.35);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+
+    /* Ranks */
+    .ranks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .rank-card {
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rank-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--orange);
+    }
+
+    .rank-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .rank-card ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .rank-card li {
+      padding: 6px 0;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      position: relative;
+      padding-right: 18px;
+    }
+
+    .rank-card li::before {
+      content: "▸";
+      position: absolute;
+      right: 0;
+      color: var(--orange);
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.4);
+    }
+
+    /* Blog */
+    .blog-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .blog-card {
+      padding: 22px;
+    }
+
+    .blog-card h3 {
+      margin-bottom: 6px;
+      color: var(--orange);
+    }
+
+    .blog-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      max-width: 480px;
+      width: 100%;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .modal h3 {
+      margin-bottom: 16px;
+      color: var(--orange);
+    }
+
+    .modal p {
+      margin-bottom: 20px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .telegram-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #0088cc, #00aaff);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s;
+    }
+
+    .telegram-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .close-modal {
+      margin-top: 18px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: var(--text);
+      padding: 8px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+
+    /* Lang Switch */
+    .lang-switch {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 100;
+      display: flex;
+      gap: 6px;
+    }
+
+    .lang-switch button {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    .lang-switch button.active {
+      background: linear-gradient(135deg, var(--orange), var(--red));
+      border-color: transparent;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .logo { width: 140px; }
+      .section-title h2 { font-size: 1.4rem; }
+      .ip-box { font-size: 1rem; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <canvas id="trail-canvas"></canvas>
+
+  <!-- Language Switch -->
+  <div class="lang-switch">
+    <button id="btn-fa" class="active" onclick="setLang('fa')">فارسی</button>
+    <button id="btn-en" onclick="setLang('en')">EN</button>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <img src="logo.png" alt="StormSMP" class="logo" onerror="this.style.display='none'">
+      <h1 class="mc-font" style="font-size: 1.6rem; background: linear-gradient(90deg, #ff6b35, #ff1e56); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        StormSMP
+      </h1>
+      <div class="glass server-status" id="server-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">در حال بررسی...</span>
+      </div>
+    </header>
+
+    <!-- IP Box -->
+    <div class="glass ip-box" onclick="copyIP()">
+      <span id="ip-text">play.stormsmp.qd.je</span>
+      <button class="copy-btn" id="copy-btn">کپی</button>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <button class="active" data-section="home" onclick="showSection('home')">خانه / Home</button>
+      <button data-section="rules" onclick="showSection('rules')">قوانین / Rules</button>
+      <button data-section="ranks" onclick="showSection('ranks')">رنک‌ها / Ranks</button>
+      <button data-section="blog" onclick="showSection('blog')">بلاگ / Blog</button>
+    </nav>
+
+    <!-- HOME -->
+    <section id="home" class="active">
+      <div class="section-title">
+        <h2>به StormSMP خوش آمدید</h2>
+        <span class="en mc-font">Welcome to StormSMP</span>
+      </div>
+      <div class="glass" style="padding: 28px; text-align: center; line-height: 1.8;">
+        <p id="home-desc">
+          سرور اس‌ام‌پی فارسی با فضای دوستانه و رقابتی. 
+          مثل DonutSMP، اینجا هم بقا، اقتصاد و تعامل واقعی داری.
+        </p>
+        <p id="home-desc-en" style="display:none; margin-top:12px;" class="mc-font" style="font-size:0.75rem; line-height:1.8;">
+          A Persian SMP server with a friendly yet competitive atmosphere.
+          Survival, economy and real interactions — just like DonutSMP.
+        </p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="https://t.me/stormsmp_ir" target="_blank" class="telegram-btn">
+            کانال تلگرام / Telegram
+          </a>
+          <a href="https://donofa.ir/stormsmp" target="_blank" class="telegram-btn" style="background: linear-gradient(135deg, #ff6b35, #ff1e56);">
+            دونیت / Donate
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- RULES -->
+    <section id="rules">
+      <div class="section-title">
+        <h2>قوانین سرور</h2>
+        <span class="en mc-font">Server Rules</span>
+      </div>
+      <div class="rules-grid">
+        <div class="glass rule-card">
+          <h3>قوانین کلی / General</h3>
+          <ul style="list-style: none; line-height: 1.9; color: var(--text-muted);">
+            <li>• احترام به بازیکنان و ادمین‌ها الزامی است</li>
+            <li>• استفاده از چیت و مادهای ممنوع کاملاً ممنوع</li>
+            <li>• فحش و محتوای نامناسب مجاز نیست</li>
+            <li>• خرابکاری عمدی و توهین به سرور ممنوع</li>
+            <li>• Respect players & staff</li>
+            <li>• No cheating / banned mods</li>
+            <li>• No toxicity or inappropriate content</li>
+          </ul>
+        </div>
+
+        <div class="glass rule-card">
+          <h3>مادهای ممنوع / Banned Mods</h3>
+          <div class="banned-list" id="banned-mods">
+            <span class="banned-item">FreeCam</span>
+            <span class="banned-item">Meteor Client</span>
+            <span class="banned-item">Vape Client</span>
+            <span class="banned-item">Minimap</span>
+            <span class="banned-item">Xray</span>
+            <span class="banned-item">LiquidBounce</span>
+            <span class="banned-item">Chest ESP</span>
+            <span class="banned-item">ESP</span>
+            <span class="banned-item">Chat Logger</span>
+            <span class="banned-item">Stash Finder</span>
+            <span class="banned-item">Dupe Mods</span>
+            <span class="banned-item">Baritone</span>
+            <span class="banned-item">Schematica (printer)</span>
+            <span class="banned-item">Any Cheat Client</span>
+            <span class="banned-item">AutoTotem / AutoCrystal</span>
+            <span class="banned-item">KillAura / Reach</span>
+            <span class="banned-item">Fly / Speed Hacks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RANKS -->
+    <section id="ranks">
+      <div class="section-title">
+        <h2>رنک‌های سرور</h2>
+        <span class="en mc-font">Server Ranks</span>
+      </div>
+      <div class="ranks-grid" id="ranks-container">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog">
+      <div class="section-title">
+        <h2>بلاگ و اخبار</h2>
+        <span class="en mc-font">Blog & News</span>
+      </div>
+      <div class="blog-list" id="blog-container">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>StormSMP © 2026 — 
+      <a href="https://t.me/stormsmp_ir" target="_blank">@stormsmp_ir</a> | 
+      <a href="https://donofa.ir/stormsmp" target="_blank">Donate</a> | 
+      Contact for ranks: <a href="https://t.me/reymit_YT" target="_blank">@reymit_YT</a>
+    </p>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="glass modal">
+      <h3 id="modal-title">درخواست رنک</h3>
+      <p id="modal-text">
+        برای دریافت این رنک به آیدی تلگرام زیر پیام دهید:
+      </p>
+      <a href="https://t.me/reymit_YT" target="_blank" class="telegram-btn">
+        @reymit_YT
+      </a>
+      <br>
+      <button class="close-modal" onclick="closeModal()">بستن / Close</button>
+    </div>
+  </div>
+
+  <script>
+    // ========== Language ==========
+    let currentLang = 'fa';
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.getElementById('btn-fa').classList.toggle('active', lang === 'fa');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+
+      // Update dynamic texts
+      document.getElementById('copy-btn').textContent = lang === 'fa' ? 'کپی' : 'Copy';
+      document.getElementById('home-desc').style.display = lang === 'fa' ? 'block' : 'none';
+      document.getElementById('home-desc-en').style.display = lang === 'en' ? 'block' : 'none';
+
+      loadRanks();
+      loadBlog();
+      updateStatusText();
+    }
+
+    // ========== Sections ==========
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('nav button').forEach(b => {
+        b.classList.toggle('active', b.dataset.section === id);
+      });
+    }
+
+    // ========== Copy IP ==========
+    function copyIP() {
+      navigator.clipboard.writeText('play.stormsmp.qd.je').then(() => {
+        const btn = document.getElementById('copy-btn');
+        const old = btn.textContent;
+        btn.textContent = currentLang === 'fa' ? 'کپی شد!' : 'Copied!';
+        setTimeout(() => btn.textContent = old, 1500);
+      });
+    }
+
+    // ========== Server Status ==========
+    async function fetchStatus() {
+      try {
+        const res = await fetch('https://api.mcsrvstat.us/3/play.stormsmp.qd.je');
+        const data = await res.json();
+        const dot = document.getElementById('status-dot');
+        const text = document.getElementById('status-text');
+
+        if (data.online) {
+          dot.classList.remove('offline');
+          const online = data.players?.online ?? 0;
+          const max = data.players?.max ?? '?';
+          text.textContent = currentLang === 'fa' 
+            ? `آنلاین — ${online} / ${max} بازیکن`
+            : `Online — ${online} / ${max} players`;
+        } else {
+          dot.classList.add('offline');
+          text.textContent = currentLang === 'fa' ? 'آفلاین' : 'Offline';
+        }
+      } catch (e) {
+        document.getElementById('status-dot').classList.add('offline');
+        document.getElementById('status-text').textContent = currentLang === 'fa' ? 'خطا در دریافت وضعیت' : 'Status error';
+      }
+    }
+
+    function updateStatusText() {
+      // re-fetch to update language
+      fetchStatus();
+    }
+
+    // ========== Data (embedded so it works offline / local) ==========
+    const ranksData = {
+      "ranks": [
+        {
+          "id": "storm",
+          "name": "Storm",
+          "name_fa": "استورم",
+          "color": "#ff6b35",
+          "features": [
+            "پرک و چت رنگی نارنجی + لوگو S در تب و چت",
+            "دریافت شارد بنفش در هر دقیقه",
+            "۳ عدد ست‌هوم",
+            "کول‌داون /rtp کمتر"
+          ],
+          "features_en": [
+            "Orange colored chat perk + S logo in tab & chat",
+            "Purple Shard every minute",
+            "3 Sethomes",
+            "Reduced /rtp cooldown"
+          ]
+        },
+        {
+          "id": "stormplus",
+          "name": "Storm+",
+          "name_fa": "استورم+",
+          "color": "#ff4500",
+          "features": [
+            "تمام قابلیت‌های رنک Storm",
+            "پرک و لوگوی + نارنجی در چت و تب",
+            "/rtp بدون کول‌داون",
+            "دستور /fly",
+            "دستور /hide (مخفی کردن نام)",
+            "۵ عدد ست‌هوم"
+          ],
+          "features_en": [
+            "All Storm rank features",
+            "Orange + logo perk in chat & tab",
+            "/rtp with no cooldown",
+            "/fly command",
+            "/hide command (hide nametag)",
+            "5 Sethomes"
+          ]
+        },
+        {
+          "id": "media",
+          "name": "MEDIA",
+          "name_fa": "مدیا",
+          "color": "#ff1e56",
+          "features": [
+            "تمام قابلیت‌های رنک Storm+",
+            "رنک اختصاصی MEDIA در چت",
+            "پشتیبانی مستقیم از ادمین",
+            "امکان درخواست ایونت اختصاصی"
+          ],
+          "features_en": [
+            "All Storm+ rank features",
+            "Exclusive MEDIA rank in chat",
+            "Direct admin support",
+            "Ability to request custom events"
+          ],
+          "requirements": {
+            "youtube": "حداقل ۵۰۰ سابسکرایبر + ۱۰۰۰ ویو (شورتس یا لانگ)",
+            "youtube_en": "Minimum 500 subscribers + 1000 views (Shorts or Long)",
+            "tiktok_instagram": "حداقل ۶۷۰ فالوور + ۲۰۰۰ ویو",
+            "tiktok_instagram_en": "Minimum 670 followers + 2000 views",
+            "conditions": [
+              "آی‌پی سرور باید در صفحه ویدیو مشخص باشد",
+              "استفاده از هیچ چیت یا ماد ممنوعه‌ای مجاز نیست",
+              "نام هیچ سرور رقیبی به جز DonutSMP نباید در ویدیو باشد",
+              "فحش و محتوای نامناسب ممنوع است",
+              "قوانین سرور باید رعایت شود"
+            ],
+            "conditions_en": [
+              "Server IP must be clearly visible on screen",
+              "No banned cheats or mods allowed",
+              "No rival server names except DonutSMP",
+              "No swearing or inappropriate content",
+              "Must follow all server rules"
+            ]
+          }
+        }
+      ]
+    };
+
+    const blogData = {
+      "posts": [
+        {
+          "id": 1,
+          "title": "افتتاح رسمی سرور StormSMP",
+          "title_en": "Official Launch of StormSMP",
+          "date": "2026-11-02",
+          "content": "سرور StormSMP به صورت رسمی افتتاح شد. به جمع ما بپیوندید و از تجربه SMP لذت ببرید!",
+          "content_en": "StormSMP has officially launched. Join us and enjoy the SMP experience!"
+        },
+        {
+          "id": 2,
+          "title": "به‌روزرسانی لیست مادهای ممنوع",
+          "title_en": "Banned Mods List Updated",
+          "date": "2026-11-02",
+          "content": "لیست مادهای ممنوع به‌روزرسانی شد. لطفاً قبل از ورود لیست را با دقت مطالعه کنید.",
+          "content_en": "The banned mods list has been updated. Please read it carefully before joining."
+        }
+      ]
+    };
+
+    // ========== Ranks ==========
+    function loadRanks() {
+      const container = document.getElementById('ranks-container');
+      container.innerHTML = '';
+
+      ranksData.ranks.forEach(rank => {
+        const features = currentLang === 'fa' ? rank.features : rank.features_en;
+        const name = currentLang === 'fa' ? rank.name_fa : rank.name;
+
+        const card = document.createElement('div');
+        card.className = 'glass rank-card';
+        card.style.borderColor = rank.color + '55';
+        card.onclick = () => openRankModal(rank);
+
+        let reqHtml = '';
+        if (rank.requirements) {
+          const yt = currentLang === 'fa' ? rank.requirements.youtube : rank.requirements.youtube_en;
+          const social = currentLang === 'fa' ? rank.requirements.tiktok_instagram : rank.requirements.tiktok_instagram_en;
+          reqHtml = `
+            <div style="margin-top:14px; font-size:0.85rem; color:var(--text-muted);">
+              <strong style="color:${rank.color}">شرایط / Requirements:</strong><br>
+              YouTube: ${yt}<br>
+              TikTok/Insta: ${social}
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <span class="rank-badge" style="color:${rank.color}">${rank.name}</span>
+          <h3 style="color:${rank.color}">${name}</h3>
+          <ul>
+            ${features.map(f => `<li>${f}</li>`).join('')}
+          </ul>
+          ${reqHtml}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openRankModal(rank) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+
+      if (currentLang === 'fa') {
+        title.textContent = `درخواست رنک ${rank.name_fa}`;
+        text.innerHTML = `برای دریافت رنک <strong style="color:${rank.color}">${rank.name}</strong> به آیدی تلگرام زیر پیام دهید و اطلاعات خود را ارسال کنید.`;
+      } else {
+        title.textContent = `Request ${rank.name} Rank`;
+        text.innerHTML = `To get the <strong style="color:${rank.color}">${rank.name}</strong> rank, message the Telegram ID below and send your information.`;
+      }
+      modal.classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('show');
+    }
+
+    // ========== Blog ==========
+    function loadBlog() {
+      const container = document.getElementById('blog-container');
+      container.innerHTML = '';
+
+      blogData.posts.forEach(post => {
+        const title = currentLang === 'fa' ? post.title : post.title_en;
+        const content = currentLang === 'fa' ? post.content : post.content_en;
+
+        const card = document.createElement('div');
+        card.className = 'glass blog-card';
+        card.innerHTML = `
+          <h3>${title}</h3>
+          <div class="blog-date">${post.date}</div>
+          <p style="color:var(--text-muted); line-height:1.7;">${content}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ========== Mouse Trail ==========
+    const canvas = document.getElementById('trail-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.speedY = (Math.random() - 0.5) * 1.5;
+        this.life = 1;
+        this.color = `hsla(${Math.random() * 30 + 10}, 100%, 60%, `;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life -= 0.02;
+        this.size *= 0.96;
+      }
+      draw() {
+        ctx.fillStyle = this.color + this.life + ')';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      for (let i = 0; i < 3; i++) {
+        particles.push(new Particle(e.clientX, e.clientY));
+      }
+    });
+
+    function animateTrail() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter(p => p.life > 0);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+
+    // ========== Init ==========
+    fetchStatus();
+    loadRanks();
+    loadBlog();
+    setInterval(fetchStatus, 60000); // refresh every 60s
+  </script>
+</body>
+</html>

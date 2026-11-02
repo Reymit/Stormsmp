@@ -1,0 +1,20 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "افتتاح رسمی سرور StormSMP",
+      "title_en": "Official Launch of StormSMP",
+      "date": "2026-11-02",
+      "content": "سرور StormSMP به صورت رسمی افتتاح شد. به جمع ما بپیوندید و از تجربه SMP لذت ببرید!",
+      "content_en": "StormSMP has officially launched. Join us and enjoy the SMP experience!"
+    },
+    {
+      "id": 2,
+      "title": "به‌روزرسانی لیست مادهای ممنوع",
+      "title_en": "Banned Mods List Updated",
+      "date": "2026-11-02",
+      "content": "لیست مادهای ممنوع به‌روزرسانی شد. لطفاً قبل از ورود لیست را با دقت مطالعه کنید.",
+      "content_en": "The banned mods list has been updated. Please read it carefully before joining."
+    }
+  ]
+}
